@@ -1,0 +1,22 @@
+services:
+
+  # Конфигурация для всех сервисов  этого файла по умолчанию
+  _defaults:
+
+    autowire: true
+    autoconfigure: true
+
+  Casisdead2772\PostcodeBundle\Service\:
+    resource: '../../Service/'
+    public: true
+
+
+#  postcode.getter:
+#    class: Casisdead2772\PostcodeBundle\Service\PostcodesService
+#    arguments:
+#      - '@monolog.http_client'
+#    public: true
+#
+#  Casisdead2772\PostcodeBundle\Service\PostcodesService:
+#    alias: postcode.getter
+#    public: true
