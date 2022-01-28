@@ -7,13 +7,14 @@ use Casisdead2772\PostcodeBundle\Exceptions\InvalidPostcodeException;
 use Casisdead2772\PostcodeBundle\Models\PostcodeModel;
 use Casisdead2772\PostcodeBundle\Service\PublicApi\UK\UKPostcodeBaseService;
 
-class PostcodesApiService extends UKPostcodeBaseService
-{
+class PostcodesApiService extends UKPostcodeBaseService {
     private const BASE_URL = 'https://api.postcodes.io/postcodes/';
 
     /**
      * @param string $postcode
+     *
      * @return bool
+     *
      * @throws InvalidApiServiceException
      */
     public function validatePostcode(string $postcode): bool {
@@ -26,8 +27,7 @@ class PostcodesApiService extends UKPostcodeBaseService
         return json_decode($responce)->result;
     }
 
-    public function getType()
-    {
+    public function getType() {
         return 'postcodes.io';
     }
 
@@ -39,12 +39,11 @@ class PostcodesApiService extends UKPostcodeBaseService
      * @throws InvalidApiServiceException
      * @throws InvalidPostcodeException
      */
-    public function getAddress(string $postcode): PostcodeModel
-    {
+    public function getAddress(string $postcode): PostcodeModel {
         /** @var string $validation */
         $validation = $this->validatePostcode($postcode);
 
-        if($validation) {
+        if ($validation) {
             try {
                 $response = $this->getClient()->request('GET', self::BASE_URL . $postcode)->getContent();
             } catch (\Throwable) {
@@ -70,12 +69,13 @@ class PostcodesApiService extends UKPostcodeBaseService
      *
      * @throws InvalidApiServiceException
      * @throws InvalidPostcodeException
+     *
+     * @param string $postcode
      */
-    public function getFullInfoByPostcode(string $postcode)
-    {
+    public function getFullInfoByPostcode(string $postcode) {
         $validation = $this->validatePostcode($postcode);
 
-        if($validation) {
+        if ($validation) {
             try {
                 $response = $this->getClient()->request('GET', 'https://api.postcodes.io/postcodes/'.$postcode)->getContent();
             } catch (\Throwable) {

@@ -13,8 +13,8 @@ services:
   Casisdead2772\PostcodeBundle\Service\PublicApi\UK\postcodesApiService\PostcodesApiService:
     tags: ['casisdead2772.postcode.service']
 
-  Casisdead2772\PostcodeBundle\Service\PublicApi\UK\getaddressApiService\GetadressApiService:
-    tags: [ 'casisdead2772.postcode.service' ]
+#  Casisdead2772\PostcodeBundle\Service\PublicApi\UK\getaddressApiService\GetadressApiService:
+#    tags: [ 'casisdead2772.postcode.service' ]
 
   Casisdead2772\PostcodeBundle\PostcodeServiceManager:
     arguments:
