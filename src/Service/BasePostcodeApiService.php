@@ -8,6 +8,8 @@ abstract class BasePostcodeApiService
 {
     abstract public function validatePostcode(string $postcode);
 
+    abstract public function getAddress(string $postcode);
+
     /**
      * @var HttpClientInterface
      */

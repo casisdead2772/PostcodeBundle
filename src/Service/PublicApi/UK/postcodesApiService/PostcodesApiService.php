@@ -5,16 +5,9 @@ namespace Casisdead2772\PostcodeBundle\Service\PublicApi\UK\postcodesApiService;
 use Casisdead2772\PostcodeBundle\Exceptions\InvalidApiServiceException;
 use Casisdead2772\PostcodeBundle\Exceptions\InvalidPostcodeException;
 use Casisdead2772\PostcodeBundle\Models\PostcodeModel;
-use Casisdead2772\PostcodeBundle\Service\PublicApi\PostcodePublicApiInterface;
 use Casisdead2772\PostcodeBundle\Service\PublicApi\UK\UKPostcodeBaseService;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Throwable;
 
-
-class PostcodesApiService extends UKPostcodeBaseService implements PostcodePublicApiInterface
+class PostcodesApiService extends UKPostcodeBaseService
 {
     private const BASE_URL = 'https://api.postcodes.io/postcodes/';
 
@@ -26,35 +19,36 @@ class PostcodesApiService extends UKPostcodeBaseService implements PostcodePubli
     public function validatePostcode(string $postcode): bool {
         try {
             $responce = $this->getClient()->request('GET', 'https://api.postcodes.io/postcodes/'.$postcode.'/validate')->getContent();
-        } catch (Throwable) {
+        } catch (\Throwable) {
             throw new InvalidApiServiceException('Service not available', 503);
         }
 
-        return json_decode($responce)->status;
+        return json_decode($responce)->result;
     }
 
-    public function getBaseURL()
+    public function getType()
     {
-        return self::BASE_URL;
+        return 'postcodes.io';
     }
 
     /**
      * @param string $postcode
      *
-     * @return array|PostcodeModel
+     * @return PostcodeModel
      *
      * @throws InvalidApiServiceException
      * @throws InvalidPostcodeException
      */
-    public function getAddress(string $postcode){
+    public function getAddress(string $postcode): PostcodeModel
+    {
         /** @var string $validation */
         $validation = $this->validatePostcode($postcode);
 
         if($validation) {
             try {
                 $response = $this->getClient()->request('GET', self::BASE_URL . $postcode)->getContent();
-            } catch (Throwable $exception) {
-                return (['message' => $exception->getMessage(), 'code' => $exception->getCode()]);
+            } catch (\Throwable) {
+                throw new InvalidPostcodeException('Postcode not found');
             }
 
             $postcodeInfo = json_decode($response)->result;
@@ -84,7 +78,7 @@ class PostcodesApiService extends UKPostcodeBaseService implements PostcodePubli
         if($validation) {
             try {
                 $response = $this->getClient()->request('GET', 'https://api.postcodes.io/postcodes/'.$postcode)->getContent();
-            } catch (Throwable) {
+            } catch (\Throwable) {
                 throw new InvalidApiServiceException('Service not available', 503);
             }
 

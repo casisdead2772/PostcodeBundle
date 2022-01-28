@@ -13,9 +13,9 @@ abstract class UKPostcodeBaseService extends BasePostcodeApiService
      * @param string $postcode
      * @return bool
      */
-    public function validatePostcode(string $postcode): bool
-    {
+    public function validatePostcode(string $postcode): bool {
         $validator = preg_match(self::UK_VALID_REGEX, $postcode);
+
         if($validator === 1){
             return true;
         }
@@ -23,6 +23,7 @@ abstract class UKPostcodeBaseService extends BasePostcodeApiService
         if ($validator === 0){
             return false;
         }
+
 
         throw new \RuntimeException('server error');
     }
