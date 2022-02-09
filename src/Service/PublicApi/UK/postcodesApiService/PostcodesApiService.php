@@ -20,8 +20,8 @@ class PostcodesApiService extends UKPostcodeBaseService {
     public function validatePostcode(string $postcode): bool {
         try {
             $responce = $this->getClient()->request('GET', 'https://api.postcodes.io/postcodes/'.$postcode.'/validate')->getContent();
-        } catch (\Throwable) {
-            throw new InvalidApiServiceException('Service not available', 503);
+        } catch (\Throwable $e) {
+            throw new InvalidApiServiceException($e->getMessage());
         }
 
         return json_decode($responce)->result;
@@ -46,8 +46,8 @@ class PostcodesApiService extends UKPostcodeBaseService {
         if ($validation) {
             try {
                 $response = $this->getClient()->request('GET', self::BASE_URL . $postcode)->getContent();
-            } catch (\Throwable) {
-                throw new InvalidPostcodeException('Postcode not found');
+            } catch (\Throwable $e) {
+                throw new InvalidPostcodeException($e->getMessage());
             }
 
             $postcodeInfo = json_decode($response)->result;
@@ -66,13 +66,14 @@ class PostcodesApiService extends UKPostcodeBaseService {
     }
 
     /**
+     * @param string $postcode
+     *
+     * @return mixed
      *
      * @throws InvalidApiServiceException
      * @throws InvalidPostcodeException
-     *
-     * @param string $postcode
      */
-    public function getFullInfoByPostcode(string $postcode) {
+    public function getFullInfoByPostcode(string $postcode): mixed {
         $validation = $this->validatePostcode($postcode);
 
         if ($validation) {

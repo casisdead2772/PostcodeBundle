@@ -38,7 +38,7 @@ class PostcodeServiceManager {
     /**
      * @return BasePostcodeApiService[]
      */
-    public function getAvailableExporters(): array {
+    public function getAvailableServices(): array {
         return $this->services;
     }
 }
