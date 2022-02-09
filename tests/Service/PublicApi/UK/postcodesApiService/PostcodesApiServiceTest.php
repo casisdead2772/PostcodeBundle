@@ -2,65 +2,32 @@
 
 namespace Casisdead2772\PostcodeBundle\tests\Service\PublicApi\UK\postcodesApiService;
 
-use Casisdead2772\PostcodeBundle\Models\PostcodeModel;
 use Casisdead2772\PostcodeBundle\Service\PublicApi\UK\postcodesApiService\PostcodesApiService;
-use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\HttpClient\ResponseInterface;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpClient\Response\MockResponse;
+use Symfony\Component\HttpClient\MockHttpClient;
 
 class PostcodesApiServiceTest extends TestCase {
-    /**
-     * @var HttpClientInterface|MockObject
-     */
-    private HttpClientInterface|MockObject $client;
+    public function testGetAddress() {
+        $responses = [
+            new MockResponse(json_encode([
+                'result' => 'true'
+            ], JSON_THROW_ON_ERROR)),
+            new MockResponse(json_encode([
+                'result' => [
+                    'postcode' => 'testPostcode',
+                    'country' => 'test',
+                    'region' => 'test',
+                    'longitude' => 123123123,
+                    'latitude' => 123123.123,
+                ]
+            ], JSON_THROW_ON_ERROR))
+        ];
 
-    /**
-     * @var PostcodesApiService
-     */
-    private PostcodesApiService $postcodeService;
+        $client = new MockHttpClient($responses);
+        $postcodeService = new PostcodesApiService($client);
+        $result = $postcodeService->getAddress('aaa aaa');
 
-    public function setUp(): void {
-        $this->client = $this->createMock(HttpClientInterface::class);
-        $this->postcodeService = new PostcodesApiService($this->client);
-    }
-
-    public function testValidatePostcode()
-    {
-        $matcher = $this->exactly(2);
-
-        $responce = $this->createMock(ResponseInterface::class);
-
-        $responce->expects($matcher)
-            ->method('getContent')
-            ->willReturnCallback(function () use ($matcher) {
-                if($matcher->getInvocationCount() === 1) {
-                    return json_encode([
-                        'result' => 'true'
-                    ], JSON_THROW_ON_ERROR);
-                }
-
-                return json_encode([
-                    'result' => [
-                        'postcode' => 'testPostcode',
-                        'country' => 'test',
-                        'region' => 'test',
-                        'longitude' => 123123123,
-                        'latitude' => 123123.123,
-                    ]
-                ], JSON_THROW_ON_ERROR);
-            });
-
-
-        $this->client->expects($this->atLeastOnce())
-            ->method('request')
-            ->willReturn($responce);
-
-
-
-        $result = $this->postcodeService->getAddress('aaa aaa');
-
-        self::assertIsObject($result);
+        self::assertEquals('testPostcode', $result->getPostcode());
     }
 }
