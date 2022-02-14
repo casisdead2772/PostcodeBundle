@@ -18,10 +18,10 @@ class PostcodeExtension extends Extension {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
 
-        foreach($config as $service => $key){
+        foreach ($config as $service => $key) {
             $selectedKey = $service.'_apikey';
 
-            if(isset($key[$selectedKey])){
+            if (isset($key[$selectedKey])) {
                 $container->setParameter($selectedKey, $key[$selectedKey]);
             } else {
                 $container->removeDefinition('postcode.'.$service);

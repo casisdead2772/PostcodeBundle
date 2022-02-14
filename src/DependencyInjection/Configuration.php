@@ -1,16 +1,12 @@
 <?php
 
-
 namespace Casisdead2772\PostcodeBundle\DependencyInjection;
-
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-class Configuration implements ConfigurationInterface
-{
-    public function getConfigTreeBuilder()
-    {
+class Configuration implements ConfigurationInterface {
+    public function getConfigTreeBuilder() {
         $treeBuilder = new TreeBuilder('postcode');
         $rootNode = $treeBuilder->getRootNode();
 
