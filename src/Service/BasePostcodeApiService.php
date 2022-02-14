@@ -15,6 +15,8 @@ abstract class BasePostcodeApiService {
 
     abstract public function getAddress(string $postcode): PostcodeModel;
 
+    abstract public function getType();
+
     /**
      * @var HttpClientInterface
      */

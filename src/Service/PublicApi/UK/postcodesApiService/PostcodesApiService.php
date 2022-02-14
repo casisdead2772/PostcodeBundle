@@ -5,10 +5,10 @@ namespace Casisdead2772\PostcodeBundle\Service\PublicApi\UK\postcodesApiService;
 use Casisdead2772\PostcodeBundle\Exceptions\InvalidApiServiceException;
 use Casisdead2772\PostcodeBundle\Exceptions\InvalidPostcodeException;
 use Casisdead2772\PostcodeBundle\Models\PostcodeModel;
-use Casisdead2772\PostcodeBundle\Service\PublicApi\UK\UKPostcodeBaseService;
+use Casisdead2772\PostcodeBundle\Service\BaseServices\UK\UKPostcodeBaseService;
 
 class PostcodesApiService extends UKPostcodeBaseService {
-    private const BASE_URL = 'https://api.postcodes.io/postcodes/';
+    public const BASE_URL = 'https://api.postcodes.io/postcodes/';
 
     /**
      * @param string $postcode

@@ -1,6 +1,6 @@
 <?php
 
-namespace Casisdead2772\PostcodeBundle\Service\PublicApi\UK;
+namespace Casisdead2772\PostcodeBundle\Service\BaseServices\UK;
 
 use Casisdead2772\PostcodeBundle\Service\BasePostcodeApiService;
 

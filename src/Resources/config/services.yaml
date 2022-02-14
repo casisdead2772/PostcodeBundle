@@ -2,7 +2,6 @@ services:
 
   # Конфигурация для всех сервисов  этого файла по умолчанию
   _defaults:
-
     autowire: true
     autoconfigure: true
 
@@ -12,9 +11,6 @@ services:
 
   Casisdead2772\PostcodeBundle\Service\PublicApi\UK\postcodesApiService\PostcodesApiService:
     tags: ['casisdead2772.postcode.service']
-
-#  Casisdead2772\PostcodeBundle\Service\PublicApi\UK\getaddressApiService\GetadressApiService:
-#    tags: [ 'casisdead2772.postcode.service' ]
 
   Casisdead2772\PostcodeBundle\PostcodeServiceManager:
     arguments:
@@ -29,3 +25,21 @@ services:
 #  Casisdead2772\PostcodeBundle\Service\PostcodesService:
 #    alias: postcode.getter
 #    public: true
+
+  postcode.getaddress:
+    class: Casisdead2772\PostcodeBundle\Service\PrivateApi\UK\GetAddressApiService
+    arguments:
+      $apiKey: "%getaddress_apikey%"
+    tags: ['casisdead2772.postcode.service']
+
+  Casisdead2772\PostcodeBundle\Service\PrivateApi\UK\GetAddressApiService: '@postcode.getaddress'
+
+  postcode.test:
+    class: Casisdead2772\PostcodeBundle\Service\PrivateApi\UK\TestApi
+    arguments:
+      $apiKey: "?%test_apikey%"
+    tags: [ 'casisdead2772.postcode.service' ]
+
+  Casisdead2772\PostcodeBundle\Service\PrivateApi\UK\TestApi: '@postcode.test'
+
+
